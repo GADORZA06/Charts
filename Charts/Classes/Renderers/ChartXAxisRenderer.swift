@@ -166,7 +166,65 @@ public class ChartXAxisRenderer: ChartAxisRendererBase
         {
             labelMaxSize.width = xAxis.wordWrapWidthPercent * valueToPixelMatrix.a
         }
-        
+//        xAxis.customValues = ["asd1",
+//        "asd2",
+//        "asd3",//        "asd4",
+//        "asd5",
+//        "asd6",
+//        "asd5",
+//        "asd5",
+//        "asd5",
+//        "asd5",
+//        "asd5",
+//        "asd5",
+//        "asd5",
+//        "asd5",
+//        "asd5",
+//        "asd5",
+//        "asd5",
+//        "asd5",
+//        "asd5",
+//        "asd5"]
+        if xAxis.customValues.count != 0 {
+          print("")
+            if xAxis.customValues.count == xAxis.values.count {
+                for i in 0..<xAxis.customValues.count {
+                    let label = xAxis.customValues[i]
+                    position.x = CGFloat(i)
+                    position.y = 0.0
+                    position = CGPointApplyAffineTransform(position, valueToPixelMatrix)
+                    
+                    if (viewPortHandler.isInBoundsX(position.x))
+                    {
+                        let labelns = label! as NSString
+                        
+                        if (xAxis.isAvoidFirstLastClippingEnabled)
+                        {
+                            // avoid clipping of the last
+                            if (i == xAxis.values.count - 1 && xAxis.values.count > 1)
+                            {
+                                let width = labelns.boundingRectWithSize(labelMaxSize, options: .UsesLineFragmentOrigin, attributes: labelAttrs, context: nil).size.width
+                                
+                                if (width > viewPortHandler.offsetRight * 2.0
+                                    && position.x + width > viewPortHandler.chartWidth)
+                                {
+                                    position.x -= width / 2.0
+                                }
+                            }
+                            else if (i == 0)
+                            { // avoid clipping of the first
+                                let width = labelns.boundingRectWithSize(labelMaxSize, options: .UsesLineFragmentOrigin, attributes: labelAttrs, context: nil).size.width
+                                position.x += width / 2.0
+                            }
+                        }
+                        
+                        drawLabel(context: context, label: label!, xIndex: i, x: position.x, y: pos, attributes: labelAttrs, constrainedToSize: labelMaxSize, anchor: anchor, angleRadians: labelRotationAngleRadians)
+                    }
+                }
+            } else {
+                print("Not enough values to match xaxis values")
+            }
+        } else {
         for i in self.minX.stride(to: min(self.maxX + 1, xAxis.values.count), by: xAxis.axisLabelModulus)
         {
             let label = xAxis.values[i]
@@ -206,6 +264,8 @@ public class ChartXAxisRenderer: ChartAxisRendererBase
                 drawLabel(context: context, label: label!, xIndex: i, x: position.x, y: pos, attributes: labelAttrs, constrainedToSize: labelMaxSize, anchor: anchor, angleRadians: labelRotationAngleRadians)
             }
         }
+        
+        }//dis
     }
     
     public func drawLabel(context context: CGContext, label: String, xIndex: Int, x: CGFloat, y: CGFloat, attributes: [String: NSObject], constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat)

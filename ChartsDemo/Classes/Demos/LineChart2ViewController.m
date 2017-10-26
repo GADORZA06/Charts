@@ -68,10 +68,16 @@
     
     ChartXAxis *xAxis = _chartView.xAxis;
     xAxis.labelFont = [UIFont systemFontOfSize:12.f];
-    xAxis.labelTextColor = UIColor.whiteColor;
+    xAxis.labelTextColor = UIColor.blueColor;
+    xAxis.labelPosition = XAxisLabelPositionBottom;
     xAxis.drawGridLinesEnabled = NO;
     xAxis.drawAxisLineEnabled = NO;
+    xAxis.drawLabelsEnabled = YES;
     xAxis.spaceBetweenLabels = 1.0;
+    
+//    xAxis.axisMaxValue = 100.0;
+//    xAxis.axisMinValue = 5.0;
+//    xAxis.axisRange = 3;
     
     ChartYAxis *leftAxis = _chartView.leftAxis;
     leftAxis.labelTextColor = [UIColor colorWithRed:51/255.f green:181/255.f blue:229/255.f alpha:1.f];
@@ -180,7 +186,7 @@
         [dataSets addObject:set1];
         
         LineChartData *data = [[LineChartData alloc] initWithXVals:xVals dataSets:dataSets];
-        [data setValueTextColor:UIColor.whiteColor];
+        [data setValueTextColor:UIColor.blackColor];
         [data setValueFont:[UIFont systemFontOfSize:9.f]];
         
         _chartView.data = data;
