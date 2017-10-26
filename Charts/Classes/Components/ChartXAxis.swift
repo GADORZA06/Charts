@@ -26,7 +26,8 @@ public class ChartXAxis: ChartAxisBase
         case TopInside
         case BottomInside
     }
-    public var customValues = [String?]() //*pato*
+    public var customValues = [String?]()
+    // added by *pat o*
     
     public var values = [String?]()
     

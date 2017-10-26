@@ -185,8 +185,8 @@ public class ChartXAxisRenderer: ChartAxisRendererBase
 //        "asd5",
 //        "asd5",
 //        "asd5"]
+        // added by *pat o* to implement custom xaxis
         if xAxis.customValues.count != 0 {
-          print("")
             if xAxis.customValues.count == xAxis.values.count {
                 for i in 0..<xAxis.customValues.count {
                     let label = xAxis.customValues[i]
