@@ -186,6 +186,7 @@ public class ChartXAxisRenderer: ChartAxisRendererBase
 //        "asd5",
 //        "asd5"]
         // added by *pat o* to implement custom xaxis
+        viewPortHandler.chartWidth
         if xAxis.customValues.count != 0 {
             if xAxis.customValues.count == xAxis.values.count {
                 for i in 0..<xAxis.customValues.count {

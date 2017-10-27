@@ -170,7 +170,7 @@ public class ChartViewPortHandler: NSObject
     { 
         return _chartWidth
     }
-
+    
     // MARK: - Scaling/Panning etc.
     
     /// Zooms by the specified zoom factors.

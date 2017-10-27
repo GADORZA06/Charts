@@ -75,10 +75,6 @@
     xAxis.drawLabelsEnabled = YES;
     xAxis.spaceBetweenLabels = 1.0;
     
-//    xAxis.axisMaxValue = 100.0;
-//    xAxis.axisMinValue = 5.0;
-//    xAxis.axisRange = 3;
-    
     ChartYAxis *leftAxis = _chartView.leftAxis;
     leftAxis.labelTextColor = [UIColor colorWithRed:51/255.f green:181/255.f blue:229/255.f alpha:1.f];
     leftAxis.axisMaxValue = 200.0;
