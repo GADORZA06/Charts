@@ -12,53 +12,64 @@ import Foundation
 import Cocoa
 import Charts
 
-public class BarDemoViewController: NSViewController
+open class BarDemoViewController: NSViewController
 {
     @IBOutlet var barChartView: BarChartView!
     
-    override public func viewDidLoad()
+    override open func viewDidLoad()
     {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        let xs = Array(1..<10).map { return Double($0) }
-        let ys1 = xs.map { i in return sin(Double(i / 2.0 / 3.141 * 1.5)) }
-        let ys2 = xs.map { i in return cos(Double(i / 2.0 / 3.141)) }
+        let xArray = Array(1..<10)
+        let ys1 = xArray.map { x in return sin(Double(x) / 2.0 / 3.141 * 1.5) }
+        let ys2 = xArray.map { x in return cos(Double(x) / 2.0 / 3.141) }
         
-        let yse1 = ys1.enumerate().map { idx, i in return BarChartDataEntry(value: i, xIndex: idx) }
-        let yse2 = ys2.enumerate().map { idx, i in return BarChartDataEntry(value: i, xIndex: idx) }
+        let yse1 = ys1.enumerated().map { x, y in return BarChartDataEntry(x: Double(x), y: y) }
+        let yse2 = ys2.enumerated().map { x, y in return BarChartDataEntry(x: Double(x), y: y) }
         
-        let data = BarChartData(xVals: xs)
-        let ds1 = BarChartDataSet(yVals: yse1, label: "Hello")
-        ds1.colors = [NSUIColor.redColor()]
+        let data = BarChartData()
+        let ds1 = BarChartDataSet(values: yse1, label: "Hello")
+        ds1.colors = [NSUIColor.red]
         data.addDataSet(ds1)
-        
-        let ds2 = BarChartDataSet(yVals: yse2, label: "World")
-        ds2.colors = [NSUIColor.blueColor()]
+
+        let ds2 = BarChartDataSet(values: yse2, label: "World")
+        ds2.colors = [NSUIColor.blue]
         data.addDataSet(ds2)
+
+        let barWidth = 0.4
+        let barSpace = 0.05
+        let groupSpace = 0.1
+        
+        data.barWidth = barWidth
+        self.barChartView.xAxis.axisMinimum = Double(xArray[0])
+        self.barChartView.xAxis.axisMaximum = Double(xArray[0]) + data.groupWidth(groupSpace: groupSpace, barSpace: barSpace) * Double(xArray.count)
+        // (0.4 + 0.05) * 2 (data set count) + 0.1 = 1
+        data.groupBars(fromX: Double(xArray[0]), groupSpace: groupSpace, barSpace: barSpace)
+
         self.barChartView.data = data
         
-        self.barChartView.gridBackgroundColor = NSUIColor.whiteColor()
+        self.barChartView.gridBackgroundColor = NSUIColor.white
         
-        self.barChartView.descriptionText = "Barchart Demo"
+        self.barChartView.chartDescription?.text = "Barchart Demo"
     }
     
-    @IBAction func save(sender: AnyObject)
+    @IBAction func save(_ sender: AnyObject)
     {
         let panel = NSSavePanel()
         panel.allowedFileTypes = ["png"]
-        panel.beginSheetModalForWindow(self.view.window!) { (result) -> Void in
-            if result == NSFileHandlingPanelOKButton
+        panel.beginSheetModal(for: self.view.window!) { (result) -> Void in
+            if result.rawValue == NSFileHandlingPanelOKButton
             {
-                if let path = panel.URL?.path
+                if let path = panel.url?.path
                 {
-                    self.barChartView.saveToPath(path, format: .PNG, compressionQuality: 1.0)
+                    let _ = self.barChartView.save(to: path, format: .png, compressionQuality: 1.0)
                 }
             }
         }
     }
     
-    override public func viewWillAppear()
+    override open func viewWillAppear()
     {
         self.barChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0)
     }
